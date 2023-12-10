@@ -12,9 +12,14 @@ main:
     # load the value of exp into a1
     la a1 exp
     lw a1 0(a1)
-
+    addi sp sp -4
+    sw ra 0(sp)
+    
     # call ex3
     jal ex3
+    
+    lw ra 0(sp)
+    addi sp sp 4
 
     # prints the output of ex3
     mv a1 a0
@@ -39,9 +44,11 @@ ex3:
     # otherwise, return ex3(a0, a1-1) * a0
     mv t0 a0      # save a0 in t0
     addi a1 a1 -1 # decrement a1
-
+    addi sp sp -4
+    sw ra 0(sp)
     jal ex3       # call ex3(a0, a1-1)
-
+    lw ra 0(sp)
+    addi sp sp 4
     mul a0 a0 t0  # multiply ex3(a0, a1-1) by t0
                   # (which contains the value of a0)
 

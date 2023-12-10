@@ -12,10 +12,15 @@ main:
     # load the value of exp into a1
     la a1 exp
     lw a1 0(a1)
-
+    
+    addi sp sp -8
+    sw ra 0(sp)
+    sw s0 4(sp)
     # call ex2
     jal ex2
-
+    lw ra 0(sp)
+    lw s0 4(sp)
+    addi sp sp 8
     # prints the output of ex2
     mv a1 a0
     li a0 1
@@ -32,7 +37,7 @@ ex2:
     # a1 contains the power to raise to
     # the return value should be the result of a0^a1
     #     where ^ is the exponent operator, not XOR
-    sw s0 0(sp)
+    
 
     # return 1 if a1 == 0
     beq a1 x0 ex2_zero_case
@@ -40,9 +45,15 @@ ex2:
     # otherwise, return ex2(a0, a1-1) * a0
     mv s0 a0      # save a0 in s0
     addi a1 a1 -1 # decrement a1
-
+    addi sp sp -8
+    sw ra 0(sp)
+    sw s0 4(sp)
+    
     jal ex2       # call ex2(a0, a1-1)
-
+    
+    lw ra 0(sp)
+    lw s0 4(sp)
+    addi sp sp 8
     mul a0 a0 s0  # multiply ex2(a0, a1-1) by s0
                   # (which contains the value of a0)
 
